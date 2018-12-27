@@ -16,13 +16,18 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('catid');
+            $table->integer('catid')->unsigned();
+            // $table->foreign('catid')->refrences('id')->on('category');
             $table->string('unit');
             $table->double('quantity');
             $table->double('buy_price');
             $table->double('sale_price');
             $table->boolean('enable');
         });
+
+      //   Schema::table('products', function($table) {
+      //   $table->foreign('catid')->references('id')->on('category');
+      // });
     }
 
     /**
