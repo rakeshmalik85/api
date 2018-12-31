@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\productrequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductCollection;
 class ProductController extends Controller
 {
+
+public function __construct (){
+$this->middleware('auth:api') -> except('index','show');
+}
+
     /**
      * Display a listing of the resource.
      *
@@ -14,28 +21,25 @@ class ProductController extends Controller
      */
     public function index()
     {
-      return Product::all();
+      return new ProductCollection(Product::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(productrequest $request)
     {
-        //
-    }
+         $product=new Product;
+         $product -> name = $request -> name;
+         $product -> catid = $request -> catid;
+         $product -> unit = $request -> unit;
+         $product -> quantity = $request -> quantity;
+         $product -> buy_price = $request -> buy_price;
+         $product -> sale_price = $request -> sale_price;
+         $product -> enable = $request -> enable;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+         $product->save();
+         return response([
+           'data'=> new ProductResource($product)
+         ],201);
+
     }
 
     /**
@@ -46,7 +50,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        return new ProductResource($product) ;
     }
 
     /**
