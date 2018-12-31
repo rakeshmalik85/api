@@ -23,6 +23,8 @@ class CreateProductsTable extends Migration
             $table->double('buy_price');
             $table->double('sale_price');
             $table->boolean('enable');
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('created_at')->nullable();
         });
 
       //   Schema::table('products', function($table) {

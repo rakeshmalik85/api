@@ -73,7 +73,7 @@ $this->middleware('auth:api') -> except('index','show');
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->all());
     }
 
     /**
